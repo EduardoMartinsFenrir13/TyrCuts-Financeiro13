@@ -211,6 +211,59 @@
             background-color: var(--accent-gold-hover);
         }
 
+        button.btn-secondary {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button.btn-secondary:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .acoes-cell {
+            display: flex;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .btn-acao {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 6px 10px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-editar {
+            color: var(--accent-gold);
+        }
+
+        .btn-editar:hover {
+            border-color: var(--accent-gold);
+            background: rgba(197, 160, 89, 0.1);
+        }
+
+        .btn-excluir {
+            color: var(--danger);
+        }
+
+        .btn-excluir:hover {
+            border-color: var(--danger);
+            background: rgba(207, 102, 121, 0.1);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -566,11 +619,12 @@
                         <th>Barbeiro</th>
                         <th>Pagamento</th>
                         <th>Valor</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody id="tabela-dashboard">
                     <tr>
-                        <td colspan="6" style="text-align: center; color: var(--text-muted);">Nenhum atendimento registrado hoje.</td>
+                        <td colspan="7" style="text-align: center; color: var(--text-muted);">Nenhum atendimento registrado hoje.</td>
                     </tr>
                 </tbody>
             </table>
@@ -584,11 +638,16 @@
             </header>
 
             <div class="form-box">
-                <h3>Dados do Corte / Serviço</h3>
+                <h3 id="form-titulo">Dados do Corte / Serviço</h3>
                 <form id="form-venda" onsubmit="registrarVenda(event)">
+                    <input type="hidden" id="edit-id" value="">
                     <div class="form-group">
                         <label for="cliente">Nome do Cliente</label>
                         <input type="text" id="cliente" required placeholder="Ex: Ragnar Lothbrok">
+                    </div>
+                    <div class="form-group">
+                        <label for="data-atendimento">Data e Hora do Atendimento</label>
+                        <input type="datetime-local" id="data-atendimento" required>
                     </div>
                     <div class="form-group">
                         <label for="servico">Serviço</label>
@@ -623,7 +682,8 @@
                             <option value="Dinheiro">Dinheiro</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn-primary">Finalizar Atendimento</button>
+                    <button type="submit" class="btn-primary" id="btn-submit-venda">Finalizar Atendimento</button>
+                    <button type="button" class="btn-secondary" id="btn-cancelar-edicao" onclick="cancelarEdicao()" style="display: none;">Cancelar Edição</button>
                 </form>
             </div>
         </div>
@@ -645,11 +705,12 @@
                         <th>Barbeiro</th>
                         <th>Pagamento</th>
                         <th>Valor</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody id="tabela-historico">
                     <tr>
-                        <td colspan="6" style="text-align: center; color: var(--text-muted);">Nenhum registro encontrado.</td>
+                        <td colspan="7" style="text-align: center; color: var(--text-muted);">Nenhum registro encontrado.</td>
                     </tr>
                 </tbody>
             </table>
@@ -703,6 +764,11 @@
 
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.parentElement.classList.add('active');
+
+            // Se o usuário navegar manualmente para "Novo Atendimento", sai do modo edição
+            if (tabId === 'caixa') {
+                cancelarEdicao();
+            }
 
             // Fecha o menu mobile após escolher uma aba
             document.getElementById('nav-links').classList.remove('open');
@@ -788,14 +854,30 @@
             return new Date(agora.getFullYear(), 0, 1);
         }
 
+        function formatarDataExibicao(date) {
+            return date.toLocaleDateString('pt-BR') + ' ' + date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+        }
+
+        // Converte um objeto Date para o formato aceito pelo input datetime-local (horário local)
+        function paraDatetimeLocal(date) {
+            const pad = n => String(n).padStart(2, '0');
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        }
+
+        function definirDataAtendimentoAgora() {
+            document.getElementById('data-atendimento').value = paraDatetimeLocal(new Date());
+        }
+
         function registrarVenda(event) {
             event.preventDefault();
 
-            const agora = new Date();
-            const novaVenda = {
-                id: Date.now(),
-                timestamp: agora.toISOString(),
-                data: agora.toLocaleDateString('pt-BR') + ' ' + agora.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}),
+            const dataInput = document.getElementById('data-atendimento').value;
+            const dataEscolhida = dataInput ? new Date(dataInput) : new Date();
+            const editId = document.getElementById('edit-id').value;
+
+            const dadosVenda = {
+                timestamp: dataEscolhida.toISOString(),
+                data: formatarDataExibicao(dataEscolhida),
                 cliente: document.getElementById('cliente').value,
                 servico: document.getElementById('servico').value,
                 valor: parseFloat(document.getElementById('valor').value),
@@ -803,19 +885,79 @@
                 pagamento: document.getElementById('pagamento').value
             };
 
-            vendas.unshift(novaVenda);
-            salvarVendas();
+            if (editId) {
+                // Atualiza um atendimento já existente, mantendo o mesmo id
+                const idx = vendas.findIndex(v => String(v.id) === String(editId));
+                if (idx !== -1) {
+                    vendas[idx] = { ...vendas[idx], ...dadosVenda };
+                }
+                alert('Atendimento atualizado com sucesso!');
+            } else {
+                vendas.unshift({ id: Date.now(), ...dadosVenda });
+                alert('Atendimento finalizado com sucesso!');
+            }
 
-            alert('Atendimento finalizado com sucesso!');
-            document.getElementById('form-venda').reset();
-            document.getElementById('desconto').value = 0;
-            valorEditadoManualmente = false;
+            // Mantém o histórico sempre ordenado do mais recente para o mais antigo
+            vendas.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            salvarVendas();
+            cancelarEdicao(); // limpa o formulário e volta ao modo "novo atendimento"
             atualizarDashboard();
 
             document.querySelectorAll('.section-container').forEach(el => el.classList.remove('active'));
             document.getElementById('dashboard').classList.add('active');
             document.querySelectorAll('.nav-links li').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-links li')[0].classList.add('active');
+        }
+
+        function editarVenda(id) {
+            const venda = vendas.find(v => String(v.id) === String(id));
+            if (!venda) return;
+
+            document.getElementById('edit-id').value = venda.id;
+            document.getElementById('cliente').value = venda.cliente;
+            document.getElementById('data-atendimento').value = paraDatetimeLocal(new Date(venda.timestamp));
+            document.getElementById('servico').value = venda.servico;
+            document.getElementById('valor').value = venda.valor;
+            document.getElementById('desconto').value = 0;
+            document.getElementById('barbeiro').value = venda.barbeiro;
+            document.getElementById('pagamento').value = venda.pagamento;
+            valorEditadoManualmente = true; // não sobrescrever o valor já existente
+
+            document.getElementById('form-titulo').textContent = 'Editando Atendimento';
+            document.getElementById('btn-submit-venda').textContent = 'Salvar Alterações';
+            document.getElementById('btn-cancelar-edicao').style.display = 'block';
+
+            // Leva o usuário até o formulário
+            document.querySelectorAll('.section-container').forEach(el => el.classList.remove('active'));
+            document.getElementById('caixa').classList.add('active');
+            document.querySelectorAll('.nav-links li').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-links li')[1].classList.add('active');
+            document.getElementById('nav-links').classList.remove('open');
+        }
+
+        function cancelarEdicao() {
+            document.getElementById('form-venda').reset();
+            document.getElementById('edit-id').value = '';
+            document.getElementById('desconto').value = 0;
+            definirDataAtendimentoAgora();
+            valorEditadoManualmente = false;
+
+            document.getElementById('form-titulo').textContent = 'Dados do Corte / Serviço';
+            document.getElementById('btn-submit-venda').textContent = 'Finalizar Atendimento';
+            document.getElementById('btn-cancelar-edicao').style.display = 'none';
+        }
+
+        function excluirVenda(id) {
+            const venda = vendas.find(v => String(v.id) === String(id));
+            if (!venda) return;
+
+            const confirmar = confirm(`Excluir o atendimento de ${venda.cliente} (${venda.data})? Essa ação não pode ser desfeita.`);
+            if (!confirmar) return;
+
+            vendas = vendas.filter(v => String(v.id) !== String(id));
+            salvarVendas();
+            atualizarDashboard();
         }
 
         function atualizarDashboard() {
@@ -837,10 +979,17 @@
             document.getElementById('metric-atendimentos').innerText = qtdAtendimentos;
             document.getElementById('metric-ticket').innerText = `R$ ${ticketMedio.toFixed(2).replace('.', ',')}`;
 
+            const botoesAcao = v => `
+                <div class="acoes-cell">
+                    <button type="button" class="btn-acao btn-editar" onclick="editarVenda('${v.id}')">Editar</button>
+                    <button type="button" class="btn-acao btn-excluir" onclick="excluirVenda('${v.id}')">Excluir</button>
+                </div>
+            `;
+
             let tbodyDash = document.getElementById('tabela-dashboard');
             tbodyDash.innerHTML = '';
             if (vendasPeriodo.length === 0) {
-                tbodyDash.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Nenhum atendimento registrado no período.</td></tr>`;
+                tbodyDash.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Nenhum atendimento registrado no período.</td></tr>`;
             } else {
                 vendasPeriodo.slice(0, 5).forEach(v => {
                     tbodyDash.innerHTML += `
@@ -851,6 +1000,7 @@
                             <td>${v.barbeiro}</td>
                             <td>${v.pagamento}</td>
                             <td>R$ ${v.valor.toFixed(2).replace('.', ',')}</td>
+                            <td>${botoesAcao(v)}</td>
                         </tr>
                     `;
                 });
@@ -859,7 +1009,7 @@
             let tbodyHist = document.getElementById('tabela-historico');
             tbodyHist.innerHTML = '';
             if (vendas.length === 0) {
-                tbodyHist.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Nenhum registro encontrado.</td></tr>`;
+                tbodyHist.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Nenhum registro encontrado.</td></tr>`;
             } else {
                 vendas.forEach(v => {
                     tbodyHist.innerHTML += `
@@ -870,6 +1020,7 @@
                             <td>${v.barbeiro}</td>
                             <td>${v.pagamento}</td>
                             <td>R$ ${v.valor.toFixed(2).replace('.', ',')}</td>
+                            <td>${botoesAcao(v)}</td>
                         </tr>
                     `;
                 });
@@ -982,6 +1133,7 @@
 
         window.onload = () => {
             carregarVendas();
+            definirDataAtendimentoAgora();
             atualizarDashboard();
         };
     </script>
