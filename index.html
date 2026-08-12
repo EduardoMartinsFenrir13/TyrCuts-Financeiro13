@@ -592,7 +592,7 @@
                     </div>
                     <div class="form-group">
                         <label for="servico">Serviço</label>
-                        <select id="servico" required onchange="atualizarValorServico()">
+                        <select id="servico" required onchange="atualizarValorServico(true)">
                             <option value="" data-preco="0">Selecione o serviço...</option>
                             <option value="Corte Clássico" data-preco="50">Corte Clássico - R$ 50,00</option>
                             <option value="Barba Viking" data-preco="45">Barba Viking - R$ 45,00</option>
@@ -600,8 +600,12 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="valor">Valor (R$)</label>
-                        <input type="number" id="valor" step="0.01" required>
+                        <label for="valor">Valor (R$) <span style="color: var(--text-muted); font-weight: 400;">— editável, pode ajustar manualmente</span></label>
+                        <input type="number" id="valor" step="0.01" required oninput="marcarValorEditado()">
+                    </div>
+                    <div class="form-group">
+                        <label for="desconto">Desconto (R$) <span style="color: var(--text-muted); font-weight: 400;">— opcional</span></label>
+                        <input type="number" id="desconto" step="0.01" min="0" value="0" oninput="atualizarValorServico(false)">
                     </div>
                     <div class="form-group">
                         <label for="barbeiro">Barbeiro Responsável</label>
@@ -675,15 +679,15 @@
     </main>
 
     <script>
-        // Dados salvos de forma persistente (window.storage) — ficam guardados
-        // entre sessões, só visíveis para você.
+        // Dados salvos no navegador (localStorage) — ficam guardados neste
+        // dispositivo/navegador mesmo depois de fechar a aba ou o site.
         let vendas = [];
         let chartServicos = null;
         let chartPagamentos = null;
         let periodoAtual = 'dia';
 
         const CORES_GRAFICO = ['#c5a059', '#03dac6', '#cf6679', '#8ab4f8', '#f4b400'];
-        const CHAVE_STORAGE = 'tyrcuts:vendas';
+        const CHAVE_STORAGE = 'tyrcuts_vendas';
 
         const LABELS_PERIODO = {
             dia: 'Hoje',
@@ -708,33 +712,52 @@
             document.getElementById('nav-links').classList.toggle('open');
         }
 
-        function atualizarValorServico() {
-            const select = document.getElementById('servico');
-            const option = select.options[select.selectedIndex];
-            const preco = option.getAttribute('data-preco');
-            document.getElementById('valor').value = preco || '';
+        let valorEditadoManualmente = false;
+
+        function marcarValorEditado() {
+            valorEditadoManualmente = true;
         }
 
-        // ---------- Persistência ----------
-        async function carregarVendas() {
+        function atualizarValorServico(trocouServico) {
+            const select = document.getElementById('servico');
+            const option = select.options[select.selectedIndex];
+            const preco = parseFloat(option.getAttribute('data-preco')) || 0;
+            const desconto = parseFloat(document.getElementById('desconto').value) || 0;
+
+            // Ao trocar de serviço, reseta a flag para o valor voltar a acompanhar o preço/desconto
+            if (trocouServico) {
+                valorEditadoManualmente = false;
+            }
+
+            // Só recalcula automaticamente se o usuário ainda não digitou o valor na mão
+            if (!valorEditadoManualmente) {
+                const valorFinal = Math.max(preco - desconto, 0);
+                document.getElementById('valor').value = valorFinal ? valorFinal.toFixed(2) : '';
+            }
+        }
+
+        // ---------- Persistência (localStorage) ----------
+        function carregarVendas() {
             const status = document.getElementById('sync-status');
             try {
-                const resultado = await window.storage.get(CHAVE_STORAGE, false);
-                vendas = resultado && resultado.value ? JSON.parse(resultado.value) : [];
-                status.textContent = '✅ Dados sincronizados.';
+                const salvo = localStorage.getItem(CHAVE_STORAGE);
+                vendas = salvo ? JSON.parse(salvo) : [];
+                status.textContent = vendas.length
+                    ? '✅ Dados carregados deste navegador.'
+                    : '✅ Pronto (nenhum atendimento salvo ainda).';
             } catch (e) {
-                // Chave ainda não existe (primeira vez usando) ou erro de leitura
                 vendas = [];
-                status.textContent = '✅ Pronto (nenhum atendimento salvo ainda).';
+                status.textContent = '⚠️ Não foi possível ler os dados salvos.';
+                console.error('Erro ao carregar vendas:', e);
             }
             setTimeout(() => { status.style.display = 'none'; }, 2500);
         }
 
-        async function salvarVendas() {
+        function salvarVendas() {
             try {
-                await window.storage.set(CHAVE_STORAGE, JSON.stringify(vendas), false);
+                localStorage.setItem(CHAVE_STORAGE, JSON.stringify(vendas));
             } catch (e) {
-                alert('Não foi possível salvar os dados. Tente novamente.');
+                alert('Não foi possível salvar os dados neste navegador.');
                 console.error('Erro ao salvar vendas:', e);
             }
         }
@@ -765,7 +788,7 @@
             return new Date(agora.getFullYear(), 0, 1);
         }
 
-        async function registrarVenda(event) {
+        function registrarVenda(event) {
             event.preventDefault();
 
             const agora = new Date();
@@ -781,10 +804,12 @@
             };
 
             vendas.unshift(novaVenda);
-            await salvarVendas();
+            salvarVendas();
 
             alert('Atendimento finalizado com sucesso!');
             document.getElementById('form-venda').reset();
+            document.getElementById('desconto').value = 0;
+            valorEditadoManualmente = false;
             atualizarDashboard();
 
             document.querySelectorAll('.section-container').forEach(el => el.classList.remove('active'));
@@ -955,8 +980,8 @@
             }
         }
 
-        window.onload = async () => {
-            await carregarVendas();
+        window.onload = () => {
+            carregarVendas();
             atualizarDashboard();
         };
     </script>
