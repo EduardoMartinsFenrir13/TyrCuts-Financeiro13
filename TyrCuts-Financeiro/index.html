@@ -386,6 +386,46 @@
             display: none;
         }
 
+        .backup-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .backup-box p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            flex: 1 1 260px;
+        }
+
+        .btn-backup {
+            background: transparent;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            padding: 10px 18px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .btn-backup:hover {
+            background: rgba(197, 160, 89, 0.1);
+        }
+
+        input[type="file"].input-oculto {
+            display: none;
+        }
+
         /* ---------- MOBILE (até 768px) ---------- */
         @media (max-width: 768px) {
             .charts-grid {
@@ -522,6 +562,16 @@
                 font-size: 0.7rem;
                 margin-bottom: 12px;
             }
+
+            .backup-box {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 14px;
+            }
+
+            .btn-backup {
+                width: 100%;
+            }
         }
 
         /* Telas bem pequenas */
@@ -533,16 +583,6 @@
             .period-toggle button {
                 flex: 1 1 100%;
             }
-        }
-
-        .preview-note {
-            background: rgba(197, 160, 89, 0.1);
-            border: 1px solid var(--accent-gold);
-            border-radius: 6px;
-            padding: 10px 15px;
-            font-size: 0.8rem;
-            color: var(--accent-gold);
-            margin-bottom: 20px;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
@@ -653,9 +693,10 @@
                         <label for="servico">Serviço</label>
                         <select id="servico" required onchange="atualizarValorServico(true)">
                             <option value="" data-preco="0">Selecione o serviço...</option>
-                            <option value="Corte Clássico" data-preco="35">Corte Clássico - R$ 35,00</option>
-                            <option value="Barba Viking" data-preco="35">Barba Viking - R$ 35,00</option>
+                            <option value="Cabelo" data-preco="35">Cabelo - R$ 35,00</option>
+                            <option value="Barba" data-preco="35">Barba - R$ 35,00</option>
                             <option value="Combo (Corte + Barba)" data-preco="70">Combo (Corte + Barba) - R$ 70,00</option>
+                            <option value="Sobrancelha" data-preco="17.50">Sobrancelha - R$ 17,50</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -694,6 +735,13 @@
                 <div class="user-badge">Controle Total</div>
             </header>
 
+            <div class="backup-box">
+                <p>⚠️ Os dados ficam salvos neste navegador para sempre — mas se quiser uma cópia de segurança (backup), pode exportar e guardar em outro lugar.</p>
+                <button type="button" class="btn-backup" onclick="exportarBackup()">⬇ Exportar Backup</button>
+                <button type="button" class="btn-backup" onclick="document.getElementById('input-importar').click()">⬆ Importar Backup</button>
+                <input type="file" id="input-importar" class="input-oculto" accept=".json" onchange="importarBackup(event)">
+            </div>
+
             <h3 class="table-title">Todas as Transações</h3>
             <div class="table-wrap">
             <table>
@@ -726,13 +774,16 @@
                 <h3>Serviços Atuais</h3>
                 <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
                     <li style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-dark); border-radius: 4px;">
-                        <span>Corte Clássico</span> <strong style="color: var(--accent-gold);">R$ 35,00</strong>
+                        <span>Cabelo</span> <strong style="color: var(--accent-gold);">R$ 35,00</strong>
                     </li>
                     <li style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-dark); border-radius: 4px;">
-                        <span>Barba Viking</span> <strong style="color: var(--accent-gold);">R$ 35,00</strong>
+                        <span>Barba</span> <strong style="color: var(--accent-gold);">R$ 35,00</strong>
                     </li>
                     <li style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-dark); border-radius: 4px;">
                         <span>Combo (Corte + Barba)</span> <strong style="color: var(--accent-gold);">R$ 70,00</strong>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-dark); border-radius: 4px;">
+                        <span>Sobrancelha</span> <strong style="color: var(--accent-gold);">R$ 17,50</strong>
                     </li>
                 </ul>
             </div>
@@ -741,7 +792,7 @@
 
     <script>
         // Dados salvos no navegador (localStorage) — ficam guardados neste
-        // dispositivo/navegador mesmo depois de fechar a aba ou o site.
+        // dispositivo/navegador para sempre, mesmo depois de fechar a aba ou o site.
         let vendas = [];
         let chartServicos = null;
         let chartPagamentos = null;
@@ -826,6 +877,64 @@
                 alert('Não foi possível salvar os dados neste navegador.');
                 console.error('Erro ao salvar vendas:', e);
             }
+        }
+
+        // ---------- Backup (exportar / importar) ----------
+        function exportarBackup() {
+            const dataStr = JSON.stringify(vendas, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const agora = new Date();
+            const nomeArquivo = `tyrcuts-backup-${agora.toISOString().slice(0,10)}.json`;
+            a.href = url;
+            a.download = nomeArquivo;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importarBackup(event) {
+            const arquivo = event.target.files[0];
+            if (!arquivo) return;
+
+            const leitor = new FileReader();
+            leitor.onload = (e) => {
+                try {
+                    const dadosImportados = JSON.parse(e.target.result);
+                    if (!Array.isArray(dadosImportados)) {
+                        throw new Error('Formato inválido');
+                    }
+
+                    const substituir = confirm(
+                        `Encontrados ${dadosImportados.length} atendimentos no backup.\n\n` +
+                        `OK = Substituir todos os dados atuais por este backup.\n` +
+                        `Cancelar = Mesclar (adicionar) estes dados aos já existentes.`
+                    );
+
+                    if (substituir) {
+                        vendas = dadosImportados;
+                    } else {
+                        const idsExistentes = new Set(vendas.map(v => String(v.id)));
+                        dadosImportados.forEach(v => {
+                            if (!idsExistentes.has(String(v.id))) {
+                                vendas.push(v);
+                            }
+                        });
+                    }
+
+                    vendas.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                    salvarVendas();
+                    atualizarDashboard();
+                    alert('Backup importado com sucesso!');
+                } catch (err) {
+                    alert('Não foi possível ler este arquivo de backup. Verifique se é um arquivo .json exportado por este sistema.');
+                    console.error('Erro ao importar backup:', err);
+                }
+                event.target.value = '';
+            };
+            leitor.readAsText(arquivo);
         }
 
         // ---------- Filtro de período ----------
