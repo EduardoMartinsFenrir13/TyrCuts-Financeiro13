@@ -994,6 +994,31 @@
     </main>
 
     <script>
+        // ---------- Adaptador de armazenamento ----------
+        // window.storage só existe dentro do Claude.ai. Quando o arquivo é aberto
+        // fora dele (baixado, Live Server, file://), usamos localStorage do
+        // próprio navegador como alternativa, pra nunca ficar sem salvar.
+        const TEM_STORAGE_NATIVO = typeof window.storage !== 'undefined' && window.storage !== null;
+        const PREFIXO_LOCAL = 'tyrcuts_local:';
+
+        const StorageAdapter = {
+            async get(key, shared = false) {
+                if (TEM_STORAGE_NATIVO) {
+                    return await window.storage.get(key, shared);
+                }
+                const raw = localStorage.getItem(PREFIXO_LOCAL + key);
+                if (raw === null) throw new Error('Chave não encontrada no localStorage');
+                return { key, value: raw, shared };
+            },
+            async set(key, value, shared = false) {
+                if (TEM_STORAGE_NATIVO) {
+                    return await window.storage.set(key, value, shared);
+                }
+                localStorage.setItem(PREFIXO_LOCAL + key, value);
+                return { key, value, shared };
+            }
+        };
+
         // Dados salvos de forma persistente (window.storage) — ficam guardados
         // entre sessões, só visíveis para você.
         let vendas = [];
@@ -1082,20 +1107,32 @@
         async function carregarVendas() {
             const status = document.getElementById('sync-status');
             try {
-                const resultado = await window.storage.get(CHAVE_STORAGE, false);
+                const resultado = await StorageAdapter.get(CHAVE_STORAGE, false);
                 vendas = resultado && resultado.value ? JSON.parse(resultado.value) : [];
-                status.textContent = '✅ Dados sincronizados.';
+                mostrarStatusSincronizacao(status, '✅ Dados sincronizados.');
             } catch (e) {
                 // Chave ainda não existe (primeira vez usando) ou erro de leitura
                 vendas = [];
-                status.textContent = '✅ Pronto (nenhum atendimento salvo ainda).';
+                mostrarStatusSincronizacao(status, '✅ Pronto (nenhum atendimento salvo ainda).');
             }
-            setTimeout(() => { status.style.display = 'none'; }, 2500);
+        }
+
+        function mostrarStatusSincronizacao(status, mensagemBase) {
+            if (TEM_STORAGE_NATIVO) {
+                status.textContent = mensagemBase;
+                setTimeout(() => { status.style.display = 'none'; }, 2500);
+            } else {
+                // Modo local: deixa o aviso fixo na tela, sem sumir, pra você
+                // sempre saber que os dados ficam só neste navegador.
+                status.innerHTML = '⚠️ Modo local: dados salvos apenas neste navegador/computador. Faça backup regularmente em Histórico → Backup Completo (JSON).';
+                status.style.color = 'var(--danger)';
+                status.style.display = 'block';
+            }
         }
 
         async function salvarVendas() {
             try {
-                await window.storage.set(CHAVE_STORAGE, JSON.stringify(vendas), false);
+                await StorageAdapter.set(CHAVE_STORAGE, JSON.stringify(vendas), false);
             } catch (e) {
                 alert('Não foi possível salvar os dados. Tente novamente.');
                 console.error('Erro ao salvar vendas:', e);
@@ -1105,7 +1142,7 @@
         // ---------- Assinaturas ----------
         async function carregarAssinantes() {
             try {
-                const resultado = await window.storage.get(CHAVE_STORAGE_ASSINATURAS, false);
+                const resultado = await StorageAdapter.get(CHAVE_STORAGE_ASSINATURAS, false);
                 assinantes = resultado && resultado.value ? JSON.parse(resultado.value) : [];
             } catch (e) {
                 assinantes = [];
@@ -1114,7 +1151,7 @@
 
         async function salvarAssinantes() {
             try {
-                await window.storage.set(CHAVE_STORAGE_ASSINATURAS, JSON.stringify(assinantes), false);
+                await StorageAdapter.set(CHAVE_STORAGE_ASSINATURAS, JSON.stringify(assinantes), false);
             } catch (e) {
                 alert('Não foi possível salvar os assinantes. Tente novamente.');
                 console.error('Erro ao salvar assinantes:', e);
@@ -1239,7 +1276,7 @@
         // ---------- Serviços & Preços (CRUD) ----------
         async function carregarServicos() {
             try {
-                const resultado = await window.storage.get(CHAVE_STORAGE_SERVICOS, false);
+                const resultado = await StorageAdapter.get(CHAVE_STORAGE_SERVICOS, false);
                 servicos = resultado && resultado.value ? JSON.parse(resultado.value) : null;
             } catch (e) {
                 servicos = null;
@@ -1252,7 +1289,7 @@
 
         async function salvarServicos() {
             try {
-                await window.storage.set(CHAVE_STORAGE_SERVICOS, JSON.stringify(servicos), false);
+                await StorageAdapter.set(CHAVE_STORAGE_SERVICOS, JSON.stringify(servicos), false);
             } catch (e) {
                 alert('Não foi possível salvar os serviços. Tente novamente.');
                 console.error('Erro ao salvar serviços:', e);
@@ -1355,7 +1392,7 @@
         // ---------- Produtos (estoque) ----------
         async function carregarProdutos() {
             try {
-                const resultado = await window.storage.get(CHAVE_STORAGE_PRODUTOS, false);
+                const resultado = await StorageAdapter.get(CHAVE_STORAGE_PRODUTOS, false);
                 produtos = resultado && resultado.value ? JSON.parse(resultado.value) : [];
             } catch (e) {
                 produtos = [];
@@ -1364,7 +1401,7 @@
 
         async function salvarProdutos() {
             try {
-                await window.storage.set(CHAVE_STORAGE_PRODUTOS, JSON.stringify(produtos), false);
+                await StorageAdapter.set(CHAVE_STORAGE_PRODUTOS, JSON.stringify(produtos), false);
             } catch (e) {
                 alert('Não foi possível salvar os produtos. Tente novamente.');
                 console.error('Erro ao salvar produtos:', e);
