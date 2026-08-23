@@ -54,6 +54,14 @@
             text-transform: uppercase;
         }
 
+        .logo-img {
+            width: 84px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+        }
+
         .logo-area p {
             font-size: 0.75rem;
             color: var(--text-muted);
@@ -211,59 +219,6 @@
             background-color: var(--accent-gold-hover);
         }
 
-        button.btn-secondary {
-            background-color: transparent;
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-            padding: 10px 20px;
-            font-weight: 600;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        button.btn-secondary:hover {
-            border-color: var(--danger);
-            color: var(--danger);
-        }
-
-        .acoes-cell {
-            display: flex;
-            gap: 8px;
-            white-space: nowrap;
-        }
-
-        .btn-acao {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 6px 10px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-editar {
-            color: var(--accent-gold);
-        }
-
-        .btn-editar:hover {
-            border-color: var(--accent-gold);
-            background: rgba(197, 160, 89, 0.1);
-        }
-
-        .btn-excluir {
-            color: var(--danger);
-        }
-
-        .btn-excluir:hover {
-            border-color: var(--danger);
-            background: rgba(207, 102, 121, 0.1);
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -386,46 +341,6 @@
             display: none;
         }
 
-        .backup-box {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 25px;
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .backup-box p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            flex: 1 1 260px;
-        }
-
-        .btn-backup {
-            background: transparent;
-            border: 1px solid var(--accent-gold);
-            color: var(--accent-gold);
-            padding: 10px 18px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
-        }
-
-        .btn-backup:hover {
-            background: rgba(197, 160, 89, 0.1);
-        }
-
-        input[type="file"].input-oculto {
-            display: none;
-        }
-
         /* ---------- MOBILE (até 768px) ---------- */
         @media (max-width: 768px) {
             .charts-grid {
@@ -469,6 +384,11 @@
 
             .logo-area p {
                 display: none;
+            }
+
+            .logo-img {
+                width: 48px;
+                margin: 0;
             }
 
             .menu-toggle {
@@ -562,16 +482,6 @@
                 font-size: 0.7rem;
                 margin-bottom: 12px;
             }
-
-            .backup-box {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 14px;
-            }
-
-            .btn-backup {
-                width: 100%;
-            }
         }
 
         /* Telas bem pequenas */
@@ -584,6 +494,190 @@
                 flex: 1 1 100%;
             }
         }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .service-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            background-color: var(--bg-dark);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
+            cursor: pointer;
+            color: var(--text-main);
+            text-align: left;
+            transition: all 0.15s ease;
+        }
+
+        .service-btn:hover {
+            border-color: var(--accent-gold-hover);
+        }
+
+        .service-btn.selected {
+            border-color: var(--accent-gold);
+            background-color: rgba(197, 160, 89, 0.12);
+        }
+
+        .service-btn .service-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .service-btn .service-price {
+            font-size: 0.85rem;
+            color: var(--accent-gold);
+        }
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .quick-btn {
+            background-color: var(--bg-dark);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.15s ease;
+        }
+
+        .quick-btn:hover {
+            border-color: var(--accent-gold-hover);
+        }
+
+        .quick-btn.selected {
+            border-color: var(--accent-gold);
+            background-color: rgba(197, 160, 89, 0.12);
+            color: var(--accent-gold);
+        }
+
+        .field-hint {
+            font-size: 0.75rem;
+            color: var(--danger);
+            margin-top: 4px;
+            display: none;
+        }
+
+        .field-hint.show {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .service-grid, .quick-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .star {
+            font-size: 1.1rem;
+        }
+
+        .star-gold {
+            color: var(--accent-gold);
+        }
+
+        .star-red {
+            color: var(--danger);
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-em-dia {
+            background: rgba(197, 160, 89, 0.15);
+            color: var(--accent-gold);
+        }
+
+        .badge-atrasado {
+            background: rgba(207, 102, 121, 0.15);
+            color: var(--danger);
+        }
+
+        .sub-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px 18px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .sub-card .sub-info h4 {
+            font-size: 1.05rem;
+            margin-bottom: 4px;
+        }
+
+        .sub-card .sub-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .sub-card .sub-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-small {
+            background-color: var(--accent-gold);
+            color: var(--bg-dark);
+            border: none;
+            padding: 8px 14px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-small:hover {
+            background-color: var(--accent-gold-hover);
+        }
+
+        .btn-small.btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+
+        .btn-small.btn-outline:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .preview-note {
+            background: rgba(197, 160, 89, 0.1);
+            border: 1px solid var(--accent-gold);
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-size: 0.8rem;
+            color: var(--accent-gold);
+            margin-bottom: 20px;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 </head>
@@ -592,7 +686,7 @@
     <aside>
         <div class="logo-area">
             <div>
-                <h1>TyrCuts</h1>
+                <img class="logo-img" src="data:image/webp;base64,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" alt="TyrCuts">
                 <p>Valhalla Barber</p>
             </div>
             <button class="menu-toggle" onclick="toggleMenu()" aria-label="Abrir menu">☰</button>
@@ -600,6 +694,8 @@
         <ul class="nav-links" id="nav-links">
             <li class="active" onclick="switchTab('dashboard', event)"><a href="#">Dashboard</a></li>
             <li onclick="switchTab('caixa', event)"><a href="#">Novo Atendimento</a></li>
+            <li onclick="switchTab('assinaturas', event)"><a href="#">Assinaturas</a></li>
+            <li onclick="switchTab('produtos', event)"><a href="#">Produtos</a></li>
             <li onclick="switchTab('relatorios', event)"><a href="#">Histórico / Caixa</a></li>
             <li onclick="switchTab('servicos', event)"><a href="#">Serviços & Preços</a></li>
         </ul>
@@ -659,12 +755,11 @@
                         <th>Barbeiro</th>
                         <th>Pagamento</th>
                         <th>Valor</th>
-                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody id="tabela-dashboard">
                     <tr>
-                        <td colspan="7" style="text-align: center; color: var(--text-muted);">Nenhum atendimento registrado hoje.</td>
+                        <td colspan="6" style="text-align: center; color: var(--text-muted);">Nenhum atendimento registrado hoje.</td>
                     </tr>
                 </tbody>
             </table>
@@ -678,55 +773,149 @@
             </header>
 
             <div class="form-box">
-                <h3 id="form-titulo">Dados do Corte / Serviço</h3>
+                <h3>Dados do Corte / Serviço</h3>
                 <form id="form-venda" onsubmit="registrarVenda(event)">
-                    <input type="hidden" id="edit-id" value="">
                     <div class="form-group">
                         <label for="cliente">Nome do Cliente</label>
                         <input type="text" id="cliente" required placeholder="Ex: Ragnar Lothbrok">
                     </div>
+
                     <div class="form-group">
-                        <label for="data-atendimento">Data e Hora do Atendimento</label>
-                        <input type="datetime-local" id="data-atendimento" required>
+                        <label>Serviço</label>
+                        <div class="service-grid" id="service-grid"></div>
+                        <div class="field-hint" id="hint-servico">Toque em um serviço acima.</div>
                     </div>
+
                     <div class="form-group">
-                        <label for="servico">Serviço</label>
-                        <select id="servico" required onchange="atualizarValorServico(true)">
-                            <option value="" data-preco="0">Selecione o serviço...</option>
-                            <option value="Cabelo" data-preco="37,50">Cabelo - R$ 37,50,00</option>
-                            <option value="Barba" data-preco="37,50">Barba - R$ 37,50,00</option>
-                            <option value="Combo (Corte + Barba)" data-preco="70">Combo (Corte + Barba) - R$ 70,00</option>
-                            <option value="Sobrancelha" data-preco="17.50">Sobrancelha - R$ 17,50</option>
-                        </select>
+                        <label for="valor">Valor (R$) — ajuste se precisar</label>
+                        <input type="number" id="valor" step="0.01" required>
                     </div>
+
                     <div class="form-group">
-                        <label for="valor">Valor (R$) <span style="color: var(--text-muted); font-weight: 400;">— editável, pode ajustar manualmente</span></label>
-                        <input type="number" id="valor" step="0.01" required oninput="marcarValorEditado()">
+                        <label>Barbeiro Responsável</label>
+                        <div class="quick-grid" id="barbeiro-grid">
+                            <button type="button" class="quick-btn selected" data-barbeiro="Eduardo" onclick="selecionarBarbeiro(this)">Eduardo</button>
+                            <button type="button" class="quick-btn" data-barbeiro="Convidado / Auxiliar" onclick="selecionarBarbeiro(this)">Outro Barbeiro</button>
+                        </div>
                     </div>
+
                     <div class="form-group">
-                        <label for="desconto">Desconto (R$) <span style="color: var(--text-muted); font-weight: 400;">— opcional</span></label>
-                        <input type="number" id="desconto" step="0.01" min="0" value="0" oninput="atualizarValorServico(false)">
+                        <label>Forma de Pagamento</label>
+                        <div class="quick-grid" id="pagamento-grid">
+                            <button type="button" class="quick-btn selected" data-pagamento="Pix" onclick="selecionarPagamento(this)">Pix</button>
+                            <button type="button" class="quick-btn" data-pagamento="Cartão de Crédito" onclick="selecionarPagamento(this)">Cartão de Crédito</button>
+                            <button type="button" class="quick-btn" data-pagamento="Cartão de Débito" onclick="selecionarPagamento(this)">Cartão de Débito</button>
+                            <button type="button" class="quick-btn" data-pagamento="Dinheiro" onclick="selecionarPagamento(this)">Dinheiro</button>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="barbeiro">Barbeiro Responsável</label>
-                        <select id="barbeiro" required>
-                            <option value="Eduardo">Eduardo</option>
-                            <option value="Convidado / Auxiliar">Outro Barbeiro</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="pagamento">Forma de Pagamento</label>
-                        <select id="pagamento" required>
-                            <option value="Pix">Pix</option>
-                            <option value="Cartão de Crédito">Cartão de Crédito</option>
-                            <option value="Cartão de Débito">Cartão de Débito</option>
-                            <option value="Dinheiro">Dinheiro</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn-primary" id="btn-submit-venda">Finalizar Atendimento</button>
-                    <button type="button" class="btn-secondary" id="btn-cancelar-edicao" onclick="cancelarEdicao()" style="display: none;">Cancelar Edição</button>
+
+                    <button type="submit" class="btn-primary">Finalizar Atendimento</button>
                 </form>
             </div>
+        </div>
+
+        <div id="assinaturas" class="section-container">
+            <header>
+                <h2>Assinaturas</h2>
+                <div class="user-badge">Clientes Recorrentes</div>
+            </header>
+
+            <div class="preview-note">
+                ⭐ dourada = pagamento em dia (dentro de 30 dias). ⭐ vermelha = atrasado. Assim que o cliente pagar pela InfinitePay, toque em "Marcar como pago" no card dele.
+            </div>
+
+            <div class="metrics-grid">
+                <div class="card">
+                    <h3>Assinantes Ativos</h3>
+                    <div class="value gold" id="metric-assinantes-total">0</div>
+                </div>
+                <div class="card">
+                    <h3>Em Dia</h3>
+                    <div class="value" id="metric-assinantes-emdia">0</div>
+                </div>
+                <div class="card">
+                    <h3>Atrasados</h3>
+                    <div class="value" id="metric-assinantes-atrasados">0</div>
+                </div>
+            </div>
+
+            <div class="form-box">
+                <h3>Novo Assinante</h3>
+                <form id="form-assinatura" onsubmit="cadastrarAssinante(event)">
+                    <div class="form-group">
+                        <label for="assinante-nome">Nome do Cliente</label>
+                        <input type="text" id="assinante-nome" required placeholder="Ex: Ragnar Lothbrok">
+                    </div>
+                    <div class="form-group">
+                        <label for="assinante-plano">Plano</label>
+                        <select id="assinante-plano" required onchange="atualizarValorPlano()">
+                            <option value="" data-preco="0">Selecione o plano...</option>
+                            <option value="Plano Corte Mensal" data-preco="100">Plano Corte Mensal - R$ 100,00</option>
+                            <option value="Plano Corte + Barba Mensal" data-preco="180">Plano Corte + Barba Mensal - R$ 180,00</option>
+                            <option value="Personalizado" data-preco="">Personalizado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="assinante-valor">Valor do Plano (R$)</label>
+                        <input type="number" id="assinante-valor" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="assinante-pagamento-inicial">Já recebeu o primeiro pagamento pela InfinitePay?</label>
+                        <select id="assinante-pagamento-inicial">
+                            <option value="sim">Sim, já pagou hoje</option>
+                            <option value="nao">Ainda não, só cadastrar</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-primary">Cadastrar Assinante</button>
+                </form>
+            </div>
+
+            <h3 class="table-title">Meus Assinantes</h3>
+            <div id="lista-assinantes"></div>
+        </div>
+
+        <div id="produtos" class="section-container">
+            <header>
+                <h2>Produtos</h2>
+                <div class="user-badge">Estoque da Loja</div>
+            </header>
+
+            <div class="metrics-grid">
+                <div class="card">
+                    <h3>Produtos Cadastrados</h3>
+                    <div class="value gold" id="metric-produtos-total">0</div>
+                </div>
+                <div class="card">
+                    <h3>Itens em Estoque</h3>
+                    <div class="value" id="metric-produtos-estoque">0</div>
+                </div>
+                <div class="card">
+                    <h3>Estoque Baixo</h3>
+                    <div class="value" id="metric-produtos-baixo">0</div>
+                </div>
+            </div>
+
+            <div class="form-box">
+                <h3>Novo Produto</h3>
+                <form id="form-produto" onsubmit="cadastrarProduto(event)">
+                    <div class="form-group">
+                        <label for="produto-nome">Nome do Produto</label>
+                        <input type="text" id="produto-nome" required placeholder="Ex: Pomada Modeladora">
+                    </div>
+                    <div class="form-group">
+                        <label for="produto-preco">Valor de Venda (R$)</label>
+                        <input type="number" id="produto-preco" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="produto-quantidade">Quantidade em Estoque</label>
+                        <input type="number" id="produto-quantidade" step="1" min="0" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Cadastrar Produto</button>
+                </form>
+            </div>
+
+            <h3 class="table-title">Meus Produtos</h3>
+            <div id="lista-produtos"></div>
         </div>
 
         <div id="relatorios" class="section-container">
@@ -735,11 +924,21 @@
                 <div class="user-badge">Controle Total</div>
             </header>
 
-            <div class="backup-box">
-                <p>⚠️ Os dados ficam salvos neste navegador para sempre — mas se quiser uma cópia de segurança (backup), pode exportar e guardar em outro lugar.</p>
-                <button type="button" class="btn-backup" onclick="exportarBackup()">⬇ Exportar Backup</button>
-                <button type="button" class="btn-backup" onclick="document.getElementById('input-importar').click()">⬆ Importar Backup</button>
-                <input type="file" id="input-importar" class="input-oculto" accept=".json" onchange="importarBackup(event)">
+            <div class="form-box">
+                <h3>Backup & Exportação</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">
+                    Os dados ficam salvos automaticamente, mas é bom ter uma cópia de segurança de vez em quando.
+                </p>
+                <div class="quick-grid" style="margin-bottom: 12px;">
+                    <button type="button" class="btn-small" onclick="exportarVendasCSV()">Exportar Vendas (CSV)</button>
+                    <button type="button" class="btn-small" onclick="exportarAssinantesCSV()">Exportar Assinantes (CSV)</button>
+                    <button type="button" class="btn-small" onclick="exportarProdutosCSV()">Exportar Produtos (CSV)</button>
+                    <button type="button" class="btn-small" onclick="exportarBackupCompleto()">Backup Completo (JSON)</button>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="input-importar-backup">Restaurar Backup Completo (JSON)</label>
+                    <input type="file" id="input-importar-backup" accept="application/json" onchange="importarBackup(event)">
+                </div>
             </div>
 
             <h3 class="table-title">Todas as Transações</h3>
@@ -753,12 +952,11 @@
                         <th>Barbeiro</th>
                         <th>Pagamento</th>
                         <th>Valor</th>
-                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody id="tabela-historico">
                     <tr>
-                        <td colspan="7" style="text-align: center; color: var(--text-muted);">Nenhum registro encontrado.</td>
+                        <td colspan="6" style="text-align: center; color: var(--text-muted);">Nenhum registro encontrado.</td>
                     </tr>
                 </tbody>
             </table>
@@ -767,39 +965,59 @@
 
         <div id="servicos" class="section-container">
             <header>
-                <h2>Tabela de Preços</h2>
+                <h2>Serviços & Preços</h2>
                 <div class="user-badge">TyrCuts Catalog</div>
             </header>
-            <div class="form-box">
-                <h3>Serviços Atuais</h3>
-                <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
-                    <li style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-dark); border-radius: 4px;">
-                        <span>Cabelo</span> <strong style="color: var(--accent-gold);">R$ 37,50</strong>
-                    </li>
-                    <li style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-dark); border-radius: 4px;">
-                        <span>Barba</span> <strong style="color: var(--accent-gold);">R$ 37,50</strong>
-                    </li>
-                    <li style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-dark); border-radius: 4px;">
-                        <span>Combo (Corte + Barba)</span> <strong style="color: var(--accent-gold);">R$ 70,00</strong>
-                    </li>
-                    <li style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-dark); border-radius: 4px;">
-                        <span>Sobrancelha</span> <strong style="color: var(--accent-gold);">R$ 17,50</strong>
-                    </li>
-                </ul>
+
+            <div class="preview-note">
+                Os serviços cadastrados aqui aparecem automaticamente como botões na tela de "Novo Atendimento".
             </div>
+
+            <div class="form-box">
+                <h3>Adicionar Serviço</h3>
+                <form id="form-servico" onsubmit="cadastrarServico(event)">
+                    <div class="form-group">
+                        <label for="servico-nome">Nome do Serviço</label>
+                        <input type="text" id="servico-nome" required placeholder="Ex: Barba Viking">
+                    </div>
+                    <div class="form-group">
+                        <label for="servico-preco">Valor (R$)</label>
+                        <input type="number" id="servico-preco" step="0.01" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Adicionar Serviço</button>
+                </form>
+            </div>
+
+            <h3 class="table-title">Serviços Atuais</h3>
+            <div id="lista-servicos"></div>
         </div>
     </main>
 
     <script>
-        // Dados salvos no navegador (localStorage) — ficam guardados neste
-        // dispositivo/navegador para sempre, mesmo depois de fechar a aba ou o site.
+        // Dados salvos de forma persistente (window.storage) — ficam guardados
+        // entre sessões, só visíveis para você.
         let vendas = [];
         let chartServicos = null;
         let chartPagamentos = null;
         let periodoAtual = 'dia';
 
+        let assinantes = [];
+        let servicos = [];
+        let produtos = [];
         const CORES_GRAFICO = ['#c5a059', '#03dac6', '#cf6679', '#8ab4f8', '#f4b400'];
-        const CHAVE_STORAGE = 'tyrcuts_vendas';
+        const CHAVE_STORAGE = 'tyrcuts:vendas';
+        const CHAVE_STORAGE_ASSINATURAS = 'tyrcuts:assinantes';
+        const CHAVE_STORAGE_SERVICOS = 'tyrcuts:servicos';
+        const CHAVE_STORAGE_PRODUTOS = 'tyrcuts:produtos';
+        const DIAS_CICLO_ASSINATURA = 30;
+        const ESTOQUE_BAIXO_LIMITE = 3;
+
+        const SERVICOS_PADRAO = [
+            { id: 1, nome: 'Corte Clássico', preco: 35 },
+            { id: 2, nome: 'Barbaterapia', preco: 35 },
+            { id: 3, nome: 'Combo (Corte + Barba)', preco: 70 },
+            { id: 4, nome: 'Sobrancelha', preco: 17.5 }
+        ];
 
         const LABELS_PERIODO = {
             dia: 'Hoje',
@@ -816,11 +1034,6 @@
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.parentElement.classList.add('active');
 
-            // Se o usuário navegar manualmente para "Novo Atendimento", sai do modo edição
-            if (tabId === 'caixa') {
-                cancelarEdicao();
-            }
-
             // Fecha o menu mobile após escolher uma aba
             document.getElementById('nav-links').classList.remove('open');
         }
@@ -829,64 +1042,465 @@
             document.getElementById('nav-links').classList.toggle('open');
         }
 
-        let valorEditadoManualmente = false;
+        // ---------- Novo Atendimento: seleção rápida por botões ----------
+        let servicoSelecionado = '';
+        let barbeiroSelecionado = 'Eduardo';
+        let pagamentoSelecionado = 'Pix';
 
-        function marcarValorEditado() {
-            valorEditadoManualmente = true;
+        function selecionarServico(btn) {
+            document.querySelectorAll('#service-grid .service-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            servicoSelecionado = btn.getAttribute('data-servico');
+            document.getElementById('valor').value = btn.getAttribute('data-preco');
+            document.getElementById('hint-servico').classList.remove('show');
         }
 
-        function atualizarValorServico(trocouServico) {
-            const select = document.getElementById('servico');
-            const option = select.options[select.selectedIndex];
-            const preco = parseFloat(option.getAttribute('data-preco')) || 0;
-            const desconto = parseFloat(document.getElementById('desconto').value) || 0;
-
-            // Ao trocar de serviço, reseta a flag para o valor voltar a acompanhar o preço/desconto
-            if (trocouServico) {
-                valorEditadoManualmente = false;
-            }
-
-            // Só recalcula automaticamente se o usuário ainda não digitou o valor na mão
-            if (!valorEditadoManualmente) {
-                const valorFinal = Math.max(preco - desconto, 0);
-                document.getElementById('valor').value = valorFinal ? valorFinal.toFixed(2) : '';
-            }
+        function selecionarBarbeiro(btn) {
+            document.querySelectorAll('#barbeiro-grid .quick-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            barbeiroSelecionado = btn.getAttribute('data-barbeiro');
         }
 
-        // ---------- Persistência (localStorage) ----------
-        function carregarVendas() {
+        function selecionarPagamento(btn) {
+            document.querySelectorAll('#pagamento-grid .quick-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            pagamentoSelecionado = btn.getAttribute('data-pagamento');
+        }
+
+        function resetarFormularioVenda() {
+            servicoSelecionado = '';
+            barbeiroSelecionado = 'Eduardo';
+            pagamentoSelecionado = 'Pix';
+            document.querySelectorAll('#service-grid .service-btn').forEach(b => b.classList.remove('selected'));
+            document.querySelectorAll('#barbeiro-grid .quick-btn').forEach(b => b.classList.remove('selected'));
+            document.getElementById('barbeiro-grid').querySelector('[data-barbeiro="Eduardo"]').classList.add('selected');
+            document.querySelectorAll('#pagamento-grid .quick-btn').forEach(b => b.classList.remove('selected'));
+            document.getElementById('pagamento-grid').querySelector('[data-pagamento="Pix"]').classList.add('selected');
+        }
+
+        // ---------- Persistência ----------
+        async function carregarVendas() {
             const status = document.getElementById('sync-status');
             try {
-                const salvo = localStorage.getItem(CHAVE_STORAGE);
-                vendas = salvo ? JSON.parse(salvo) : [];
-                status.textContent = vendas.length
-                    ? '✅ Dados carregados deste navegador.'
-                    : '✅ Pronto (nenhum atendimento salvo ainda).';
+                const resultado = await window.storage.get(CHAVE_STORAGE, false);
+                vendas = resultado && resultado.value ? JSON.parse(resultado.value) : [];
+                status.textContent = '✅ Dados sincronizados.';
             } catch (e) {
+                // Chave ainda não existe (primeira vez usando) ou erro de leitura
                 vendas = [];
-                status.textContent = '⚠️ Não foi possível ler os dados salvos.';
-                console.error('Erro ao carregar vendas:', e);
+                status.textContent = '✅ Pronto (nenhum atendimento salvo ainda).';
             }
             setTimeout(() => { status.style.display = 'none'; }, 2500);
         }
 
-        function salvarVendas() {
+        async function salvarVendas() {
             try {
-                localStorage.setItem(CHAVE_STORAGE, JSON.stringify(vendas));
+                await window.storage.set(CHAVE_STORAGE, JSON.stringify(vendas), false);
             } catch (e) {
-                alert('Não foi possível salvar os dados neste navegador.');
+                alert('Não foi possível salvar os dados. Tente novamente.');
                 console.error('Erro ao salvar vendas:', e);
             }
         }
 
-        // ---------- Backup (exportar / importar) ----------
-        function exportarBackup() {
-            const dataStr = JSON.stringify(vendas, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
+        // ---------- Assinaturas ----------
+        async function carregarAssinantes() {
+            try {
+                const resultado = await window.storage.get(CHAVE_STORAGE_ASSINATURAS, false);
+                assinantes = resultado && resultado.value ? JSON.parse(resultado.value) : [];
+            } catch (e) {
+                assinantes = [];
+            }
+        }
+
+        async function salvarAssinantes() {
+            try {
+                await window.storage.set(CHAVE_STORAGE_ASSINATURAS, JSON.stringify(assinantes), false);
+            } catch (e) {
+                alert('Não foi possível salvar os assinantes. Tente novamente.');
+                console.error('Erro ao salvar assinantes:', e);
+            }
+        }
+
+        function atualizarValorPlano() {
+            const select = document.getElementById('assinante-plano');
+            const option = select.options[select.selectedIndex];
+            const preco = option.getAttribute('data-preco');
+            document.getElementById('assinante-valor').value = preco || '';
+        }
+
+        async function cadastrarAssinante(event) {
+            event.preventDefault();
+
+            const agora = new Date();
+            const pagouHoje = document.getElementById('assinante-pagamento-inicial').value === 'sim';
+
+            const novoAssinante = {
+                id: Date.now(),
+                nome: document.getElementById('assinante-nome').value,
+                plano: document.getElementById('assinante-plano').value || 'Personalizado',
+                valor: parseFloat(document.getElementById('assinante-valor').value),
+                // ultimoPagamento null = nunca pagou ainda (fica atrasado até o primeiro pagamento ser marcado)
+                ultimoPagamento: pagouHoje ? agora.toISOString() : null
+            };
+
+            assinantes.unshift(novoAssinante);
+            await salvarAssinantes();
+
+            document.getElementById('form-assinatura').reset();
+            renderizarAssinantes();
+        }
+
+        async function marcarComoPago(id) {
+            const assinante = assinantes.find(a => a.id === id);
+            if (!assinante) return;
+            assinante.ultimoPagamento = new Date().toISOString();
+            await salvarAssinantes();
+            renderizarAssinantes();
+        }
+
+        async function removerAssinante(id) {
+            if (!confirm('Remover este assinante da lista?')) return;
+            assinantes = assinantes.filter(a => a.id !== id);
+            await salvarAssinantes();
+            renderizarAssinantes();
+        }
+
+        function statusAssinante(assinante) {
+            if (!assinante.ultimoPagamento) {
+                return { emDia: false, diasAtraso: null, proximoVencimento: null };
+            }
+            const ultimoPagamento = new Date(assinante.ultimoPagamento);
+            const vencimento = new Date(ultimoPagamento);
+            vencimento.setDate(vencimento.getDate() + DIAS_CICLO_ASSINATURA);
+
+            const agora = new Date();
+            const emDia = agora <= vencimento;
+            const diasAtraso = emDia ? 0 : Math.floor((agora - vencimento) / (1000 * 60 * 60 * 24));
+
+            return { emDia, diasAtraso, proximoVencimento: vencimento };
+        }
+
+        function renderizarAssinantes() {
+            const container = document.getElementById('lista-assinantes');
+            container.innerHTML = '';
+
+            if (assinantes.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted); font-size: 0.9rem;">Nenhum assinante cadastrado ainda.</p>`;
+                document.getElementById('metric-assinantes-total').innerText = '0';
+                document.getElementById('metric-assinantes-emdia').innerText = '0';
+                document.getElementById('metric-assinantes-atrasados').innerText = '0';
+                return;
+            }
+
+            let emDiaCount = 0;
+            let atrasadoCount = 0;
+
+            assinantes.forEach(assinante => {
+                const status = statusAssinante(assinante);
+                if (status.emDia) emDiaCount++; else atrasadoCount++;
+
+                const estrela = status.emDia
+                    ? '<span class="star star-gold">★</span>'
+                    : '<span class="star star-red">★</span>';
+
+                const badge = status.emDia
+                    ? '<span class="badge-status badge-em-dia">Em dia</span>'
+                    : `<span class="badge-status badge-atrasado">Atrasado${status.diasAtraso ? ' (' + status.diasAtraso + 'd)' : ''}</span>`;
+
+                let infoTexto;
+                if (!assinante.ultimoPagamento) {
+                    infoTexto = 'Nenhum pagamento registrado ainda';
+                } else {
+                    const ultimo = new Date(assinante.ultimoPagamento).toLocaleDateString('pt-BR');
+                    const vencimento = status.proximoVencimento.toLocaleDateString('pt-BR');
+                    infoTexto = `Último pagamento: ${ultimo} · Vence em: ${vencimento}`;
+                }
+
+                container.innerHTML += `
+                    <div class="sub-card">
+                        <div class="sub-info">
+                            <h4>${estrela} ${assinante.nome} ${badge}</h4>
+                            <p>${assinante.plano} · R$ ${assinante.valor.toFixed(2).replace('.', ',')}/mês</p>
+                            <p>${infoTexto}</p>
+                        </div>
+                        <div class="sub-actions">
+                            <button class="btn-small" onclick="marcarComoPago(${assinante.id})">✓ Marcar como pago</button>
+                            <button class="btn-small btn-outline" onclick="removerAssinante(${assinante.id})">Remover</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('metric-assinantes-total').innerText = assinantes.length;
+            document.getElementById('metric-assinantes-emdia').innerText = emDiaCount;
+            document.getElementById('metric-assinantes-atrasados').innerText = atrasadoCount;
+        }
+
+        // ---------- Serviços & Preços (CRUD) ----------
+        async function carregarServicos() {
+            try {
+                const resultado = await window.storage.get(CHAVE_STORAGE_SERVICOS, false);
+                servicos = resultado && resultado.value ? JSON.parse(resultado.value) : null;
+            } catch (e) {
+                servicos = null;
+            }
+            if (!servicos || servicos.length === 0) {
+                servicos = JSON.parse(JSON.stringify(SERVICOS_PADRAO));
+                await salvarServicos();
+            }
+        }
+
+        async function salvarServicos() {
+            try {
+                await window.storage.set(CHAVE_STORAGE_SERVICOS, JSON.stringify(servicos), false);
+            } catch (e) {
+                alert('Não foi possível salvar os serviços. Tente novamente.');
+                console.error('Erro ao salvar serviços:', e);
+            }
+        }
+
+        async function cadastrarServico(event) {
+            event.preventDefault();
+            const nome = document.getElementById('servico-nome').value.trim();
+            const preco = parseFloat(document.getElementById('servico-preco').value);
+
+            servicos.push({ id: Date.now(), nome, preco });
+            await salvarServicos();
+
+            document.getElementById('form-servico').reset();
+            renderizarServicos();
+            renderizarServicoButtons();
+        }
+
+        async function editarServico(id) {
+            const servico = servicos.find(s => s.id === id);
+            if (!servico) return;
+
+            const novoNome = prompt('Nome do serviço:', servico.nome);
+            if (novoNome === null || novoNome.trim() === '') return;
+
+            const novoPrecoStr = prompt('Valor (R$):', servico.preco);
+            if (novoPrecoStr === null) return;
+            const novoPreco = parseFloat(novoPrecoStr.replace(',', '.'));
+            if (isNaN(novoPreco)) { alert('Valor inválido.'); return; }
+
+            servico.nome = novoNome.trim();
+            servico.preco = novoPreco;
+            await salvarServicos();
+            renderizarServicos();
+            renderizarServicoButtons();
+        }
+
+        async function removerServico(id) {
+            if (!confirm('Remover este serviço?')) return;
+            servicos = servicos.filter(s => s.id !== id);
+            await salvarServicos();
+            renderizarServicos();
+            renderizarServicoButtons();
+        }
+
+        function renderizarServicos() {
+            const container = document.getElementById('lista-servicos');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (servicos.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted); font-size: 0.9rem;">Nenhum serviço cadastrado ainda.</p>`;
+                return;
+            }
+
+            servicos.forEach(servico => {
+                container.innerHTML += `
+                    <div class="sub-card">
+                        <div class="sub-info">
+                            <h4>${servico.nome}</h4>
+                            <p>R$ ${servico.preco.toFixed(2).replace('.', ',')}</p>
+                        </div>
+                        <div class="sub-actions">
+                            <button class="btn-small" onclick="editarServico(${servico.id})">Editar</button>
+                            <button class="btn-small btn-outline" onclick="removerServico(${servico.id})">Remover</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderizarServicoButtons() {
+            const grid = document.getElementById('service-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            servicos.forEach(servico => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'service-btn';
+                btn.setAttribute('data-servico', servico.nome);
+                btn.setAttribute('data-preco', servico.preco);
+                btn.onclick = () => selecionarServico(btn);
+                btn.innerHTML = `
+                    <span class="service-name">${servico.nome}</span>
+                    <span class="service-price">R$ ${servico.preco.toFixed(2).replace('.', ',')}</span>
+                `;
+                grid.appendChild(btn);
+            });
+
+            // Mantém a seleção atual (se o serviço selecionado ainda existir na lista)
+            if (servicoSelecionado) {
+                const btnAtivo = Array.from(grid.querySelectorAll('.service-btn'))
+                    .find(b => b.getAttribute('data-servico') === servicoSelecionado);
+                if (btnAtivo) btnAtivo.classList.add('selected');
+            }
+        }
+
+        // ---------- Produtos (estoque) ----------
+        async function carregarProdutos() {
+            try {
+                const resultado = await window.storage.get(CHAVE_STORAGE_PRODUTOS, false);
+                produtos = resultado && resultado.value ? JSON.parse(resultado.value) : [];
+            } catch (e) {
+                produtos = [];
+            }
+        }
+
+        async function salvarProdutos() {
+            try {
+                await window.storage.set(CHAVE_STORAGE_PRODUTOS, JSON.stringify(produtos), false);
+            } catch (e) {
+                alert('Não foi possível salvar os produtos. Tente novamente.');
+                console.error('Erro ao salvar produtos:', e);
+            }
+        }
+
+        async function cadastrarProduto(event) {
+            event.preventDefault();
+
+            const novoProduto = {
+                id: Date.now(),
+                nome: document.getElementById('produto-nome').value.trim(),
+                preco: parseFloat(document.getElementById('produto-preco').value),
+                quantidade: parseInt(document.getElementById('produto-quantidade').value, 10)
+            };
+
+            produtos.unshift(novoProduto);
+            await salvarProdutos();
+
+            document.getElementById('form-produto').reset();
+            renderizarProdutos();
+        }
+
+        async function venderProduto(id) {
+            const produto = produtos.find(p => p.id === id);
+            if (!produto) return;
+
+            if (produto.quantidade <= 0) {
+                alert('Sem estoque disponível para esse produto.');
+                return;
+            }
+
+            const qtdStr = prompt(`Quantas unidades de "${produto.nome}" foram vendidas?`, '1');
+            if (qtdStr === null) return;
+            const qtd = parseInt(qtdStr, 10);
+
+            if (isNaN(qtd) || qtd <= 0) { alert('Quantidade inválida.'); return; }
+            if (qtd > produto.quantidade) { alert(`Só há ${produto.quantidade} unidade(s) em estoque.`); return; }
+
+            const formaPagamento = prompt('Forma de pagamento (Pix, Cartão de Crédito, Cartão de Débito, Dinheiro):', 'Pix');
+            if (formaPagamento === null) return;
+
+            produto.quantidade -= qtd;
+            await salvarProdutos();
+
+            // Registra também no caixa/histórico geral para entrar no faturamento
+            const agora = new Date();
+            vendas.unshift({
+                id: Date.now(),
+                timestamp: agora.toISOString(),
+                data: agora.toLocaleDateString('pt-BR') + ' ' + agora.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}),
+                cliente: 'Cliente Balcão',
+                servico: `Produto: ${produto.nome} (x${qtd})`,
+                valor: produto.preco * qtd,
+                barbeiro: 'Loja',
+                pagamento: formaPagamento.trim() || 'Pix'
+            });
+            await salvarVendas();
+
+            renderizarProdutos();
+            atualizarDashboard();
+        }
+
+        async function reporEstoque(id) {
+            const produto = produtos.find(p => p.id === id);
+            if (!produto) return;
+
+            const qtdStr = prompt(`Quantas unidades de "${produto.nome}" chegaram?`, '10');
+            if (qtdStr === null) return;
+            const qtd = parseInt(qtdStr, 10);
+            if (isNaN(qtd) || qtd <= 0) { alert('Quantidade inválida.'); return; }
+
+            produto.quantidade += qtd;
+            await salvarProdutos();
+            renderizarProdutos();
+        }
+
+        async function removerProduto(id) {
+            if (!confirm('Remover este produto do catálogo?')) return;
+            produtos = produtos.filter(p => p.id !== id);
+            await salvarProdutos();
+            renderizarProdutos();
+        }
+
+        function renderizarProdutos() {
+            const container = document.getElementById('lista-produtos');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (produtos.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted); font-size: 0.9rem;">Nenhum produto cadastrado ainda.</p>`;
+                document.getElementById('metric-produtos-total').innerText = '0';
+                document.getElementById('metric-produtos-estoque').innerText = '0';
+                document.getElementById('metric-produtos-baixo').innerText = '0';
+                return;
+            }
+
+            let totalItensEstoque = 0;
+            let estoqueBaixoCount = 0;
+
+            produtos.forEach(produto => {
+                totalItensEstoque += produto.quantidade;
+                const estoqueBaixo = produto.quantidade <= ESTOQUE_BAIXO_LIMITE;
+                if (estoqueBaixo) estoqueBaixoCount++;
+
+                const badge = produto.quantidade === 0
+                    ? '<span class="badge-status badge-atrasado">Esgotado</span>'
+                    : estoqueBaixo
+                        ? '<span class="badge-status badge-atrasado">Estoque baixo</span>'
+                        : '<span class="badge-status badge-em-dia">Estoque OK</span>';
+
+                container.innerHTML += `
+                    <div class="sub-card">
+                        <div class="sub-info">
+                            <h4>${produto.nome} ${badge}</h4>
+                            <p>R$ ${produto.preco.toFixed(2).replace('.', ',')} · Restam: <strong>${produto.quantidade}</strong> unidade(s)</p>
+                        </div>
+                        <div class="sub-actions">
+                            <button class="btn-small" onclick="venderProduto(${produto.id})">Vender</button>
+                            <button class="btn-small" onclick="reporEstoque(${produto.id})">Repor Estoque</button>
+                            <button class="btn-small btn-outline" onclick="removerProduto(${produto.id})">Remover</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('metric-produtos-total').innerText = produtos.length;
+            document.getElementById('metric-produtos-estoque').innerText = totalItensEstoque;
+            document.getElementById('metric-produtos-baixo').innerText = estoqueBaixoCount;
+        }
+
+        // ---------- Backup & Exportação ----------
+        function baixarArquivo(conteudo, nomeArquivo, tipoMime) {
+            const blob = new Blob([conteudo], { type: tipoMime });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            const agora = new Date();
-            const nomeArquivo = `tyrcuts-backup-${agora.toISOString().slice(0,10)}.json`;
             a.href = url;
             a.download = nomeArquivo;
             document.body.appendChild(a);
@@ -895,46 +1509,94 @@
             URL.revokeObjectURL(url);
         }
 
-        function importarBackup(event) {
+        function paraCSV(linhas) {
+            return linhas.map(linha =>
+                linha.map(campo => {
+                    const texto = String(campo ?? '');
+                    if (texto.includes(',') || texto.includes('"') || texto.includes('\n')) {
+                        return '"' + texto.replace(/"/g, '""') + '"';
+                    }
+                    return texto;
+                }).join(',')
+            ).join('\n');
+        }
+
+        function exportarVendasCSV() {
+            const linhas = [['Data/Hora', 'Cliente', 'Serviço', 'Barbeiro', 'Pagamento', 'Valor']];
+            vendas.forEach(v => linhas.push([v.data, v.cliente, v.servico, v.barbeiro, v.pagamento, v.valor.toFixed(2)]));
+            baixarArquivo(paraCSV(linhas), `tyrcuts_vendas_${dataParaArquivo()}.csv`, 'text/csv;charset=utf-8');
+        }
+
+        function exportarAssinantesCSV() {
+            const linhas = [['Nome', 'Plano', 'Valor Mensal', 'Último Pagamento', 'Status']];
+            assinantes.forEach(a => {
+                const status = statusAssinante(a);
+                linhas.push([
+                    a.nome,
+                    a.plano,
+                    a.valor.toFixed(2),
+                    a.ultimoPagamento ? new Date(a.ultimoPagamento).toLocaleDateString('pt-BR') : 'Nunca pagou',
+                    status.emDia ? 'Em dia' : 'Atrasado'
+                ]);
+            });
+            baixarArquivo(paraCSV(linhas), `tyrcuts_assinantes_${dataParaArquivo()}.csv`, 'text/csv;charset=utf-8');
+        }
+
+        function exportarProdutosCSV() {
+            const linhas = [['Nome', 'Valor', 'Quantidade em Estoque']];
+            produtos.forEach(p => linhas.push([p.nome, p.preco.toFixed(2), p.quantidade]));
+            baixarArquivo(paraCSV(linhas), `tyrcuts_produtos_${dataParaArquivo()}.csv`, 'text/csv;charset=utf-8');
+        }
+
+        function exportarBackupCompleto() {
+            const backup = {
+                versao: 1,
+                exportadoEm: new Date().toISOString(),
+                vendas, assinantes, servicos, produtos
+            };
+            baixarArquivo(JSON.stringify(backup, null, 2), `tyrcuts_backup_${dataParaArquivo()}.json`, 'application/json');
+        }
+
+        async function importarBackup(event) {
             const arquivo = event.target.files[0];
             if (!arquivo) return;
 
-            const leitor = new FileReader();
-            leitor.onload = (e) => {
-                try {
-                    const dadosImportados = JSON.parse(e.target.result);
-                    if (!Array.isArray(dadosImportados)) {
-                        throw new Error('Formato inválido');
-                    }
+            try {
+                const texto = await arquivo.text();
+                const backup = JSON.parse(texto);
 
-                    const substituir = confirm(
-                        `Encontrados ${dadosImportados.length} atendimentos no backup.\n\n` +
-                        `OK = Substituir todos os dados atuais por este backup.\n` +
-                        `Cancelar = Mesclar (adicionar) estes dados aos já existentes.`
-                    );
-
-                    if (substituir) {
-                        vendas = dadosImportados;
-                    } else {
-                        const idsExistentes = new Set(vendas.map(v => String(v.id)));
-                        dadosImportados.forEach(v => {
-                            if (!idsExistentes.has(String(v.id))) {
-                                vendas.push(v);
-                            }
-                        });
-                    }
-
-                    vendas.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-                    salvarVendas();
-                    atualizarDashboard();
-                    alert('Backup importado com sucesso!');
-                } catch (err) {
-                    alert('Não foi possível ler este arquivo de backup. Verifique se é um arquivo .json exportado por este sistema.');
-                    console.error('Erro ao importar backup:', err);
+                if (!confirm('Isso vai substituir TODOS os dados atuais (vendas, assinantes, serviços e produtos) pelos dados do arquivo. Deseja continuar?')) {
+                    event.target.value = '';
+                    return;
                 }
-                event.target.value = '';
-            };
-            leitor.readAsText(arquivo);
+
+                vendas = Array.isArray(backup.vendas) ? backup.vendas : vendas;
+                assinantes = Array.isArray(backup.assinantes) ? backup.assinantes : assinantes;
+                servicos = Array.isArray(backup.servicos) && backup.servicos.length > 0 ? backup.servicos : servicos;
+                produtos = Array.isArray(backup.produtos) ? backup.produtos : produtos;
+
+                await salvarVendas();
+                await salvarAssinantes();
+                await salvarServicos();
+                await salvarProdutos();
+
+                atualizarDashboard();
+                renderizarAssinantes();
+                renderizarServicos();
+                renderizarServicoButtons();
+                renderizarProdutos();
+
+                alert('Backup restaurado com sucesso!');
+            } catch (e) {
+                alert('Não foi possível ler esse arquivo de backup. Verifique se é um JSON exportado pelo próprio sistema.');
+                console.error('Erro ao importar backup:', e);
+            }
+            event.target.value = '';
+        }
+
+        function dataParaArquivo() {
+            const agora = new Date();
+            return agora.toISOString().slice(0, 10);
         }
 
         // ---------- Filtro de período ----------
@@ -963,110 +1625,39 @@
             return new Date(agora.getFullYear(), 0, 1);
         }
 
-        function formatarDataExibicao(date) {
-            return date.toLocaleDateString('pt-BR') + ' ' + date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
-        }
-
-        // Converte um objeto Date para o formato aceito pelo input datetime-local (horário local)
-        function paraDatetimeLocal(date) {
-            const pad = n => String(n).padStart(2, '0');
-            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-        }
-
-        function definirDataAtendimentoAgora() {
-            document.getElementById('data-atendimento').value = paraDatetimeLocal(new Date());
-        }
-
-        function registrarVenda(event) {
+        async function registrarVenda(event) {
             event.preventDefault();
 
-            const dataInput = document.getElementById('data-atendimento').value;
-            const dataEscolhida = dataInput ? new Date(dataInput) : new Date();
-            const editId = document.getElementById('edit-id').value;
-
-            const dadosVenda = {
-                timestamp: dataEscolhida.toISOString(),
-                data: formatarDataExibicao(dataEscolhida),
-                cliente: document.getElementById('cliente').value,
-                servico: document.getElementById('servico').value,
-                valor: parseFloat(document.getElementById('valor').value),
-                barbeiro: document.getElementById('barbeiro').value,
-                pagamento: document.getElementById('pagamento').value
-            };
-
-            if (editId) {
-                // Atualiza um atendimento já existente, mantendo o mesmo id
-                const idx = vendas.findIndex(v => String(v.id) === String(editId));
-                if (idx !== -1) {
-                    vendas[idx] = { ...vendas[idx], ...dadosVenda };
-                }
-                alert('Atendimento atualizado com sucesso!');
-            } else {
-                vendas.unshift({ id: Date.now(), ...dadosVenda });
-                alert('Atendimento finalizado com sucesso!');
+            if (!servicoSelecionado) {
+                document.getElementById('hint-servico').classList.add('show');
+                document.getElementById('service-grid').scrollIntoView({behavior: 'smooth', block: 'center'});
+                return;
             }
 
-            // Mantém o histórico sempre ordenado do mais recente para o mais antigo
-            vendas.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            const agora = new Date();
+            const novaVenda = {
+                id: Date.now(),
+                timestamp: agora.toISOString(),
+                data: agora.toLocaleDateString('pt-BR') + ' ' + agora.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}),
+                cliente: document.getElementById('cliente').value,
+                servico: servicoSelecionado,
+                valor: parseFloat(document.getElementById('valor').value),
+                barbeiro: barbeiroSelecionado,
+                pagamento: pagamentoSelecionado
+            };
 
-            salvarVendas();
-            cancelarEdicao(); // limpa o formulário e volta ao modo "novo atendimento"
+            vendas.unshift(novaVenda);
+            await salvarVendas();
+
+            alert('Atendimento finalizado com sucesso!');
+            document.getElementById('form-venda').reset();
+            resetarFormularioVenda();
             atualizarDashboard();
 
             document.querySelectorAll('.section-container').forEach(el => el.classList.remove('active'));
             document.getElementById('dashboard').classList.add('active');
             document.querySelectorAll('.nav-links li').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-links li')[0].classList.add('active');
-        }
-
-        function editarVenda(id) {
-            const venda = vendas.find(v => String(v.id) === String(id));
-            if (!venda) return;
-
-            document.getElementById('edit-id').value = venda.id;
-            document.getElementById('cliente').value = venda.cliente;
-            document.getElementById('data-atendimento').value = paraDatetimeLocal(new Date(venda.timestamp));
-            document.getElementById('servico').value = venda.servico;
-            document.getElementById('valor').value = venda.valor;
-            document.getElementById('desconto').value = 0;
-            document.getElementById('barbeiro').value = venda.barbeiro;
-            document.getElementById('pagamento').value = venda.pagamento;
-            valorEditadoManualmente = true; // não sobrescrever o valor já existente
-
-            document.getElementById('form-titulo').textContent = 'Editando Atendimento';
-            document.getElementById('btn-submit-venda').textContent = 'Salvar Alterações';
-            document.getElementById('btn-cancelar-edicao').style.display = 'block';
-
-            // Leva o usuário até o formulário
-            document.querySelectorAll('.section-container').forEach(el => el.classList.remove('active'));
-            document.getElementById('caixa').classList.add('active');
-            document.querySelectorAll('.nav-links li').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-links li')[1].classList.add('active');
-            document.getElementById('nav-links').classList.remove('open');
-        }
-
-        function cancelarEdicao() {
-            document.getElementById('form-venda').reset();
-            document.getElementById('edit-id').value = '';
-            document.getElementById('desconto').value = 0;
-            definirDataAtendimentoAgora();
-            valorEditadoManualmente = false;
-
-            document.getElementById('form-titulo').textContent = 'Dados do Corte / Serviço';
-            document.getElementById('btn-submit-venda').textContent = 'Finalizar Atendimento';
-            document.getElementById('btn-cancelar-edicao').style.display = 'none';
-        }
-
-        function excluirVenda(id) {
-            const venda = vendas.find(v => String(v.id) === String(id));
-            if (!venda) return;
-
-            const confirmar = confirm(`Excluir o atendimento de ${venda.cliente} (${venda.data})? Essa ação não pode ser desfeita.`);
-            if (!confirmar) return;
-
-            vendas = vendas.filter(v => String(v.id) !== String(id));
-            salvarVendas();
-            atualizarDashboard();
         }
 
         function atualizarDashboard() {
@@ -1088,17 +1679,10 @@
             document.getElementById('metric-atendimentos').innerText = qtdAtendimentos;
             document.getElementById('metric-ticket').innerText = `R$ ${ticketMedio.toFixed(2).replace('.', ',')}`;
 
-            const botoesAcao = v => `
-                <div class="acoes-cell">
-                    <button type="button" class="btn-acao btn-editar" onclick="editarVenda('${v.id}')">Editar</button>
-                    <button type="button" class="btn-acao btn-excluir" onclick="excluirVenda('${v.id}')">Excluir</button>
-                </div>
-            `;
-
             let tbodyDash = document.getElementById('tabela-dashboard');
             tbodyDash.innerHTML = '';
             if (vendasPeriodo.length === 0) {
-                tbodyDash.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Nenhum atendimento registrado no período.</td></tr>`;
+                tbodyDash.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Nenhum atendimento registrado no período.</td></tr>`;
             } else {
                 vendasPeriodo.slice(0, 5).forEach(v => {
                     tbodyDash.innerHTML += `
@@ -1109,7 +1693,6 @@
                             <td>${v.barbeiro}</td>
                             <td>${v.pagamento}</td>
                             <td>R$ ${v.valor.toFixed(2).replace('.', ',')}</td>
-                            <td>${botoesAcao(v)}</td>
                         </tr>
                     `;
                 });
@@ -1118,7 +1701,7 @@
             let tbodyHist = document.getElementById('tabela-historico');
             tbodyHist.innerHTML = '';
             if (vendas.length === 0) {
-                tbodyHist.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Nenhum registro encontrado.</td></tr>`;
+                tbodyHist.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Nenhum registro encontrado.</td></tr>`;
             } else {
                 vendas.forEach(v => {
                     tbodyHist.innerHTML += `
@@ -1129,7 +1712,6 @@
                             <td>${v.barbeiro}</td>
                             <td>${v.pagamento}</td>
                             <td>R$ ${v.valor.toFixed(2).replace('.', ',')}</td>
-                            <td>${botoesAcao(v)}</td>
                         </tr>
                     `;
                 });
@@ -1240,10 +1822,16 @@
             }
         }
 
-        window.onload = () => {
-            carregarVendas();
-            definirDataAtendimentoAgora();
+        window.onload = async () => {
+            await carregarVendas();
+            await carregarAssinantes();
+            await carregarServicos();
+            await carregarProdutos();
             atualizarDashboard();
+            renderizarAssinantes();
+            renderizarServicos();
+            renderizarServicoButtons();
+            renderizarProdutos();
         };
     </script>
 </body>
