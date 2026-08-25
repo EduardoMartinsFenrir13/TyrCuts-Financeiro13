@@ -781,6 +781,16 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="data-atendimento">Dia do Atendimento</label>
+                        <input type="date" id="data-atendimento" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="horario-atendimento">Horário do Atendimento</label>
+                        <input type="time" id="horario-atendimento" required>
+                    </div>
+
+                    <div class="form-group">
                         <label>Serviço</label>
                         <div class="service-grid" id="service-grid"></div>
                         <div class="field-hint" id="hint-servico">Toque em um serviço acima.</div>
@@ -1101,6 +1111,21 @@
             document.getElementById('barbeiro-grid').querySelector('[data-barbeiro="Eduardo"]').classList.add('selected');
             document.querySelectorAll('#pagamento-grid .quick-btn').forEach(b => b.classList.remove('selected'));
             document.getElementById('pagamento-grid').querySelector('[data-pagamento="Pix"]').classList.add('selected');
+            definirDataHoraAtuais();
+        }
+
+        // Preenche os campos de dia/horário do atendimento com a data e hora
+        // atuais — serve como valor padrão, mas o barbeiro pode alterar
+        // livremente para agendar/registrar um horário diferente.
+        function definirDataHoraAtuais() {
+            const agora = new Date();
+            const pad = (n) => String(n).padStart(2, '0');
+
+            const dataISO = `${agora.getFullYear()}-${pad(agora.getMonth() + 1)}-${pad(agora.getDate())}`;
+            const horaISO = `${pad(agora.getHours())}:${pad(agora.getMinutes())}`;
+
+            document.getElementById('data-atendimento').value = dataISO;
+            document.getElementById('horario-atendimento').value = horaISO;
         }
 
         // ---------- Persistência ----------
@@ -1671,11 +1696,24 @@
                 return;
             }
 
-            const agora = new Date();
+            // Usa o dia e horário escolhidos pelo barbeiro no formulário
+            // (em vez do momento exato do clique), para refletir a data/hora
+            // real do atendimento — inclusive agendamentos futuros ou
+            // lançamentos retroativos.
+            const dataStr = document.getElementById('data-atendimento').value; // "AAAA-MM-DD"
+            const horaStr = document.getElementById('horario-atendimento').value; // "HH:MM"
+
+            if (!dataStr || !horaStr) {
+                alert('Selecione o dia e o horário do atendimento.');
+                return;
+            }
+
+            const dataHoraAtendimento = new Date(`${dataStr}T${horaStr}:00`);
+
             const novaVenda = {
                 id: Date.now(),
-                timestamp: agora.toISOString(),
-                data: agora.toLocaleDateString('pt-BR') + ' ' + agora.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}),
+                timestamp: dataHoraAtendimento.toISOString(),
+                data: dataHoraAtendimento.toLocaleDateString('pt-BR') + ' ' + dataHoraAtendimento.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}),
                 cliente: document.getElementById('cliente').value,
                 servico: servicoSelecionado,
                 valor: parseFloat(document.getElementById('valor').value),
@@ -1684,6 +1722,10 @@
             };
 
             vendas.unshift(novaVenda);
+            // Mantém o histórico ordenado pela data/hora do atendimento
+            // (mais recente primeiro), já que agora ela pode ser retroativa
+            // ou futura em vez de sempre "agora".
+            vendas.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
             await salvarVendas();
 
             alert('Atendimento finalizado com sucesso!');
@@ -1879,6 +1921,7 @@
             await carregarAssinantes();
             await carregarServicos();
             await carregarProdutos();
+            definirDataHoraAtuais();
             atualizarDashboard();
             renderizarAssinantes();
             renderizarServicos();
